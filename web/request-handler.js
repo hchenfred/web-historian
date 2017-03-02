@@ -5,10 +5,9 @@ var querystring = require('querystring');
 // require more modules/folders here!
 
 exports.handleRequest = function (req, res) {
-  console.log('req.method', req.method);
   if (req.method === 'GET') {
-    //console.log('req.url', req.url);
     if (req.url === '/') {
+      // TODO: fix the paths for archives
       fs.readFile(archive.paths.siteAssets + '/index.html', (err, html) => {
         if (err) {
           throw err;
@@ -72,7 +71,7 @@ exports.handleRequest = function (req, res) {
         } else if (isInList) { 
           archive.isUrlArchived(parseChunk.url, (exists) => { 
             if (exists) { 
-              fs.readFile(archive.paths.archivedSites + '/' +parseChunk.url, (err, html) => {
+              fs.readFile(archive.paths.archivedSites + '/' + parseChunk.url, (err, html) => {
                 if (err) {
                   throw err;
                 }

@@ -63,16 +63,19 @@ exports.downloadUrls = function(urls) {
   _.each(urls, (url) => {
     exports.isUrlArchived(url, (exists) => {
       if (!exists) {
-        //TODO: fix the download of urls to the file
-        fs.writeFileSync(exports.paths.archivedSites + '/' + url, (url + 'test file'));
+        // TODO: fix the download of urls to the file
+        // fs.writeFileSync(exports.paths.archivedSites + '/' + url, (url + 'test file'));
+        exports.downloadUrl(url, (data) => {
+          fs.writeFile(exports.paths.archivedSites + '/' + url, data);
+        });
       }
     });
   });
 };
 
-exports.downloadUrl = function(url) {
+exports.downloadUrl = function(url, callback) {
   var options = {
-    host: 'www.google.com',
+    host: url,
     port: 80,
     path: '/'
   };
@@ -81,15 +84,17 @@ exports.downloadUrl = function(url) {
     res.setEncoding('utf8');
     res.on('data', function (chunk) {
       content += chunk;
+      callback(content);
     });
 
     res.on('end', function () {
-      console.log(content);
+      //console.log(content);
     });
 
   });
   req.end();
 };
+
 
 
 

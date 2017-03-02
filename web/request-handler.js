@@ -58,7 +58,7 @@ exports.handleRequest = function (req, res) {
       chunkString += chunk;
       var parseChunk = querystring.parse(chunkString);
 
-      archive.isUrlInList(parseChunk.url, (isInList) => {
+      archive.isUrlInList(parseChunk.url, (isInList) => { 
         if (!isInList) {
           archive.addUrlToList(parseChunk.url, () => {});
           fs.readFile(archive.paths.siteAssets + '/loading.html', (err, html) => {
@@ -69,6 +69,31 @@ exports.handleRequest = function (req, res) {
             res.write(html);
             res.end();
           });
+        } else if (isInList) { 
+          archive.isUrlArchived(parseChunk.url, (exists) => { 
+            if (exists) { 
+              fs.readFile(archive.paths.archivedSites + '/' +parseChunk.url, (err, html) => {
+                if (err) {
+                  throw err;
+                }
+                res.writeHead(200, {'Content-Type': 'text/html'});
+                res.write(html);                
+                res.end();
+              });
+            } else {
+              fs.readFile(archive.paths.siteAssets + '/loading.html', (err, html) => {
+                if (err) {
+                  throw err;
+                }
+                res.writeHead(200, {'Content-Type': 'text/html'});
+                res.write(html);                
+                res.end();
+              });
+
+            }
+
+          });  
+
         }
       });
     });

@@ -17,6 +17,6 @@ var scheduler = function() {
   //download the files of the url
 //setup cron to schedule the scheduler
 
-//01 * * * *  /usr/local/bin/node /Users/student/Desktop/hrsf72-web-historian/workers/htmlfetcher.js
+//*/1 * * * *  /usr/local/bin/node /Users/student/Desktop/hrsf72-web-historian/workers/htmlfetcher.js
 console.log('Scheduler: >----------->');
 scheduler();
